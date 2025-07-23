@@ -12,5 +12,11 @@ output "cd_user_access_key_secret" {
 
 output "ecr_repo_app" {
   description = "ECR Repository URL for app image"
+  value = aws_ecr_repository.app.repository_url
+}
+
+
+output "ecr_repo_proxy" {
+  description = "ECR Repository URL for app image"
   value = aws_ecr_repository.proxy.repository_url
 }
