@@ -8,3 +8,9 @@ output "cd_user_access_key_secret" {
   value       = aws_iam_access_key.cd.secret
   sensitive   = true
 }
+
+
+output "ecr_repo_app" {
+  description = "ECR Repository URL for app image"
+  value = aws_ecr_repository.proxy.repository_url
+}
