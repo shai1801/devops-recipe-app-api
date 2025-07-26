@@ -5,7 +5,7 @@ variable "prefix" {
 
 variable "project" {
   description = "Project name for tagging resources"
-  default     = "shai@example.com"
+  default     = "recipe-app-api"
 }
 
 variable "contact" {
