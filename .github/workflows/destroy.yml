@@ -21,7 +21,7 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      runs:
+      run: |
         exprot TF_WORKSPACE=${{ github.event.inputs.envrionment }}
         cd infra/
         docker compose run --rm terrafrom -chdir=deploy/ init
