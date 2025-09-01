@@ -157,8 +157,8 @@ resource "aws_iam_user_policy_attachment" "ec2" {
 
 data "aws_iam_policy_document" "service_linked_rds" {
   statement {
-    effect    = "Allow"
-    actions   = ["iam:CreateServiceLinkedRole"]
+    effect = "Allow"
+    actions = ["iam:CreateServiceLinkedRole"]
     resources = ["arn:aws:iam::*:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS"]
     condition {
       test     = "StringLike"
@@ -178,3 +178,34 @@ resource "aws_iam_user_policy_attachment" "service_linked_rds" {
   user       = aws_iam_user.cd.name
   policy_arn = aws_iam_policy.service_linked_rds.arn
 }
+
+data "aws_iam_policy_document" "rds" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "rds:DescribeDBSubnetGroups",
+      "rds:DescribeDBInstances",
+      "rds:CreateDBSubnetGroup",
+      "rds:DeleteDBSubnetGroup",
+      "rds:CreateDBInstance",
+      "rds:DeleteDBInstance",
+      "rds:ListTagsForResource",
+      "rds:ModifyDBInstance",
+      "rds:AddTagsToResource"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "rds" {
+  name        = "${aws_iam_user.cd.name}-rds"
+  description = "Allow user to manage RDS resources."
+  policy      = data.aws_iam_policy_document.rds.json
+}
+
+resource "aws_iam_user_policy_attachment" "rds" {
+  user       = aws_iam_user.cd.name
+  policy_arn = aws_iam_policy.rds.arn
+}
+
+
