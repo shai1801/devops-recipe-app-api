@@ -104,6 +104,7 @@ data "aws_iam_policy_document" "ec2" {
       "ec2:CreateVpc",
       "ec2:DeleteVpc",
       "ec2:DescribeSecurityGroups",
+      "ec2:DescribeAvailabilityZones",
       "ec2:DeleteSubnet",
       "ec2:DeleteSecurityGroup",
       "ec2:DescribeNetworkInterfaces",
@@ -157,8 +158,8 @@ resource "aws_iam_user_policy_attachment" "ec2" {
 
 data "aws_iam_policy_document" "service_linked_rds" {
   statement {
-    effect = "Allow"
-    actions = ["iam:CreateServiceLinkedRole"]
+    effect    = "Allow"
+    actions   = ["iam:CreateServiceLinkedRole"]
     resources = ["arn:aws:iam::*:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS"]
     condition {
       test     = "StringLike"
