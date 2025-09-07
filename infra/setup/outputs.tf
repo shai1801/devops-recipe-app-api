@@ -17,6 +17,6 @@ output "ecr_repo_app" {
 
 
 output "ecr_repo_proxy" {
-  description = "ECR Repository URL for app image"
+  description = "ECR Repository URL for proxy image"
   value       = aws_ecr_repository.proxy.repository_url
 }
