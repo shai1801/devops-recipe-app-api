@@ -3,7 +3,7 @@ name: Destroy
 on:
   workflow_dispatch:
     inputs:
-      envrionment:
+      environment:
         type: choice
         description: Which environment to remove AWS resources for?
         options:
@@ -28,4 +28,3 @@ jobs:
         docker compose run --rm terraform -chdir=deploy/ state list
 
         docker compose run --rm terraform -chdir=deploy/ destroy -auto-approve
-
