@@ -91,9 +91,10 @@ resource "aws_iam_user_policy_attachment" "ecr" {
   policy_arn = aws_iam_policy.ecr.arn
 }
 
-#########################
+#######################################
 # Policy for EC2 access #
-#########################
+#VPC related permissions are under EC2#
+#######################################
 
 data "aws_iam_policy_document" "ec2" {
   statement {
@@ -206,6 +207,7 @@ data "aws_iam_policy_document" "ecs" {
       "ecs:RegisterTaskDefinition",
       "ecs:CreateCluster",
       "ecs:UpdateCluster",
+      "ecs:TagResource"
     ]
     resources = ["*"]
   }
