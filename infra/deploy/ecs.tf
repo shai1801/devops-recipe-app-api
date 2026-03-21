@@ -56,7 +56,46 @@ resource "aws_ecs_task_definition" "api" {
   execution_role_arn = aws_iam_role.task_execution_role.arn
   task_role_arn      = aws_iam_role.app_task.arn
 
-  container_definitions = jsonencode([])
+  container_definitions = jsonencode([
+    {
+      name      = "proxy"             #This is name of the cointainer#
+      image     = var.ecr_proxy_image #This is path to ecr repo with proxy image,which is set in variables.tf and passed in through env vars in pipeline.#
+      essential = true                #If this container fails, the task is considered failed.This container is essential for our application.#
+      memory    = 256                 #Memory limit for the container. Sum of memories for all the defined task must ont exceed memory defines for aws_ecs_task_definition#
+      user      = "nginx"             #Name of the user to run the container. This is set to nginx because the proxy image is based on nginx image.#
+      portMappings = [
+        {
+          containerPort = 8000 #Port on which the container listens. This should match the port defined in the proxy configuration.#
+          hostPort      = 8000 #
+          protocol      = "tcp"
+        }
+      ]
+      environment = [
+        {
+          name  = "APP_HOST"
+          value = "127.0.0.1"
+        }
+      ]
+
+      mountPoints = [
+        {
+          readOnly      = true
+          containerPath = "/var/static"
+          sourceVolume  = "static"
+        }
+      ]
+
+      logConfiguration = {
+
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.ecs_task_logs.name
+          "awslogs-region"        = data.aws_region.current.name
+          "awslogs-stream-prefix" = "proxy"
+        }
+      }
+    }
+  ])
 
   volume {
     name = "status"
