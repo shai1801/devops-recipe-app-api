@@ -57,6 +57,62 @@ resource "aws_ecs_task_definition" "api" {
   task_role_arn      = aws_iam_role.app_task.arn
 
   container_definitions = jsonencode([
+
+    {
+      name      = "api"             #This is name of the cointainer#
+      image     = var.ecr_app_image #This is path to ecr repo with app image,which is set in variables.tf and passed in through env vars in pipeline.#
+      essential = true              #If this container fails, the task is considered failed.This container is essential for our application.#
+      memory    = 256               #Memory limit for the container. Sum of memories for all the defined task must ont exceed memory defines for aws_ecs_task_definition#
+      user      = "django-user"     #Name of the user to run the container. This is set to root because the app image needs to run some commands as root user.#
+      environment = [
+
+
+        {
+          name  = "DJANGO_SECRET_KEY"
+          value = var.django_secret_key
+        },
+        {
+          name  = "DB_HOST"
+          value = aws_db_instance.main.address
+        },
+        {
+          name  = "DB_NAME"
+          value = aws_db_instance.main.db_name
+        },
+        {
+          name  = "DB_USER"
+          value = aws_db_instance.main.username
+        },
+
+        {
+          name  = "DB_PASS"
+          value = aws_db_instance.main.password
+        },
+        {
+          name  = "ALLOWED_HOSTS"
+          value = "*"
+        }
+
+      ]
+
+      mountPoints = [
+        {
+          readOnly      = false
+          containerPath = "/vol/web/static"
+          sourceVolume  = "static"
+        }
+      ]
+
+      logConfiguration = {
+
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.ecs_task_logs.name
+          "awslogs-region"        = data.aws_region.current.name
+          "awslogs-stream-prefix" = "api"
+        }
+      }
+    },
     {
       name      = "proxy"             #This is name of the cointainer#
       image     = var.ecr_proxy_image #This is path to ecr repo with proxy image,which is set in variables.tf and passed in through env vars in pipeline.#

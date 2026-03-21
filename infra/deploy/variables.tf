@@ -33,3 +33,7 @@ variable "ecr_app_image" {
   description = "Path to ECR repo with app image"
 }
 
+variable "django_secret_key" {
+  description = "Secret key for Django"
+}
+
