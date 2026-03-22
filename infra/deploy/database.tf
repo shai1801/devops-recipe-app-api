@@ -22,7 +22,12 @@ resource "aws_security_group" "rds" {
   ingress {
     protocol  = "tcp"
     from_port = 5432
-    to_port   = 5432
+
+    #This rule allows inbound traffic on port 5432 (the default port for PostgreSQL) from the security group associated with our ECS services.
+    #This means that only resources that are part of the ECS services security group will be able to connect to the RDS database, which enhances security by restricting access to the database.
+    security_groups = [
+      aws_security_group.ecs_services.id
+    ]
   }
 
   tags = {

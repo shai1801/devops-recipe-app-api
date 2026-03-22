@@ -1,24 +1,3 @@
-<div align="center">
-    <a href="https://londonappdeveloper.com" target="_blank">
-        <img src="https://londonappdeveloper.com/wp-content/uploads/2024/11/banner.svg" alt="Banner image" />
-    </a>
-</div>
-
-<div align="center">
-    <p>Full-Stack Consulting and Courses.</p>
-    <a href="https://londonappdeveloper.com" target="_blank">Website</a> |
-    <a href="https://londonappdeveloper.teachable.com/" target="_blank">Courses</a> |
-    <a href="https://londonappdeveloper.com/tutorials/" target="_blank">Tutorials</a> |
-    <a href="https://londonappdeveloper.com/consulting/" target="_blank">Consulting
-</div>
-
-<br /><br >
-
-# DevOps Deployment Automation with Terraform, AWS and Docker - Starter Code
-
-This project contains the starter code for our course: [DevOps Deployment Automation with Terraform, AWS and Docker](https://londonapp.dev/c3).
-
-It contains the code you should have by the end of our [Build a Backend REST API with Python & Django REST Framework - Advanced](https://londonapp.dev/c2) course. We've created this snapshot, in-case we update the aforementioned course in the future.
 
 ## Local Development
 
@@ -61,15 +40,15 @@ docker compose down --volumes
 docker compose up
 ```
 
-## Course Documentation
+## Project Documentation
 
-This section contains supplementary documentation for the course steps.
+This section contains supplementary documentation for the project.
 
 ### AWS CLI
 
 #### AWS CLI Authentication
 
-This course uses [aws-vault](https://github.com/99designs/aws-vault) to authenticate with the AWS CLI in the terminal.
+This project uses [aws-vault](https://github.com/99designs/aws-vault) to authenticate with the AWS CLI in the terminal.
 
 To authenticate:
 
@@ -132,7 +111,7 @@ docker compose run --rm terraform -chdir=setup output cd_user_access_key_secret
 
 This section lists the GitHub Actions variables which need to be configured on the GitHub project.
 
-> Note: This is only applicable if using GitHub Actions, if you're using GitLab, see [GitLab CI/CD Variables](#gitlab-cicd-variables) below.
+
 
 If using GitHub Actions, variables are set as either **Variables** (clear text and readable) or **Secrets** (values hidden in logs).
 
@@ -150,26 +129,6 @@ Secrets:
 - `DOCKERHUB_TOKEN`: Token created in `DOCKERHUB_USER` in [Docker Hub](https://hub.docker.com/).
 - `TF_VAR_DB_PASSWORD`: Password for the RDS database (make something up).
 - `TF_VAR_DJANGO_SECRET_KEY`: Secret key for the Django app (make something up).
-
-### GitLab CI/CD Variables
-
-This section lists the GitLab CI/CD variables which must be configured to run jobs.
-
-> Note: This is only applicable if you are using GitLab CI/CD. If you are using GitHub Actions, see [#github-actions-variables](GitHub Actions Variables) above.
-
-In GitLab CI/CD, all variables are set under **Variables**, and optionally set as masked (secrets hidden from output) and/or protected (restricted to protected branches).
-
-Each variable and their state is listed below:
-
-- `AWS_ACCESS_KEY_ID`: Access key for the CD AWS IAM user that is created by Terraform and output as `cd_user_access_key_id`.
-- `AWS_ACCOUNT_ID`: AWS Account ID taken from AWS directly.
-- `DOCKERHUB_USER`: Username for [Docker Hub](https://hub.docker.com/) for avoiding Docker Pull rate limit issues.
-- `ECR_REPO_APP`: URL for the Docker repo containing the app image output by Terraform as `ecr_repo_app`.
-- `ECR_REPO_PROXY`: URL for the Docker repo containing the proxy image output by Terraform as `ecr_repo_proxy`.
-- `AWS_SECRET_ACCESS_KEY` (**Masked**): Secret key for `AWS_ACCESS_KEY_ID` set in variables, output by Terraform as `cd_user_access_key_secret`.
-- `DOCKERHUB_TOKEN` (**Masked**): Token created in `DOCKERHUB_USER` in [Docker Hub](https://hub.docker.com/).
-- `TF_VAR_db_password` (**Masked**): Password for the RDS database (make something up).
-- `TF_VAR_django_secret_key` (**Masked**, **Protected**): Secret key for the Django app (make something up).
 
 ## Section Notes and Resources
 
@@ -214,21 +173,4 @@ git config --global user.email email@example.com
 git config --global user.name "User Name"
 git config --global push.autoSetupRemote true
 ```
-
-## Other courses
-
-Check out our courses on [londonappdeveloper.com](https://londonappdeveloper.com).
-
-Or find them below:
-
-- [Python for Absolute Beginners](https://londonapp.dev/c4)
-- [Build a Backend REST API with Python & Django REST Framework - Beginner](https://londonapp.dev/c1)
-- [Build a Backend REST API with Python & Django REST Framework - Advanced](https://londonapp.dev/c2)
-- [Deploy a Serverless Django App on Google App Engine](https://londonapp.dev/c5)
-
-fixed deploy and destroy yml files.
-
-
-dummy change
-dummy change to test destroy.
 

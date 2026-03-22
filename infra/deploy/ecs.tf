@@ -162,3 +162,64 @@ resource "aws_ecs_task_definition" "api" {
     cpu_architecture        = "X86_64"
   }
 }
+
+
+#This seucrity group manages the rules for our service.And then we have assigned this to main VPC
+#In this security group we have defined rules for outbound access as well as inbound access.
+resource "aws_security_group" "ecs_services" {
+
+  description = "Security group for ECS services"
+  name        = "${local.prefix}-ecs-service"
+  vpc_id      = aws_vpc.main.id
+
+  # Outbound access to endpoints. This defines outbound access to port 443 for all the IP addresses.
+  #This means that container will be able to access services like cloudwatch, S3 running on port 443.
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  #RDS conntectivity. Here CIDR block has been narrowed down to private subnets only, which means that only resources running in private subnets will be able to access the database. This is a security best practice to limit the exposure of the database.
+
+  egress {
+    from_port = 5432
+    to_port   = 5432
+    protocol  = "tcp"
+    cidr_blocks = [
+      aws_subnet.private_a.cidr_block,
+      aws_subnet.private_b.cidr_block
+    ]
+
+  }
+
+  #HTTP Inbound access, which allows incoming traffic on port 8000 from any IP address.
+  #This is necessary for our application to be accessible from the internet.
+  #If  you check above its the same port on which the proxy container listens,
+  #so this rule allows external traffic to reach the proxy container, which then forwards it to the application container.
+
+  ingress {
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
+  }
+}
+
+resource "aws_ecs_service" "api" {
+  name                   = "${local.prefix}-api-service"
+  cluster                = aws_ecs_cluster.main.name
+  task_definition        = aws_ecs_task_definition.api.family
+  desired_count          = 1
+  launch_type            = "FARGATE"
+  platform_version       = "1.4.0"
+  enable_execute_command = true
+
+  network_configuration {
+    subnets          = [aws_subnet.private_a.id, aws_subnet.private_b.id]
+    security_groups  = [aws_security_group.ecs_services.id]
+    assign_public_ip = true #This is temporary till ALB is implemented.
+  }
+}
