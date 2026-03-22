@@ -1,4 +1,23 @@
 
+## Creating a Special GitHub Repository
+
+GitHub allows you to create a **special profile README repository** — a repository named exactly the same as your GitHub username (e.g., `shai1801/shai1801`). The `README.md` in this repository is automatically displayed on your GitHub profile page.
+
+### Steps to Create Your Special Profile Repository
+
+1. Go to [GitHub](https://github.com) and sign in to your account.
+2. Click the **+** icon in the top-right corner and select **New repository**.
+3. Set the **Repository name** to exactly your GitHub username (e.g., `shai1801`).
+4. Set the repository visibility to **Public**.
+5. Check **Add a README file** to initialize the repository with a `README.md`.
+6. Click **Create repository**.
+
+GitHub will display a banner confirming that you have found the special repository feature.
+
+### Customizing Your Profile README
+
+Edit the `README.md` in your new special repository to introduce yourself, showcase your projects, or display GitHub stats. Anything you put in this file will appear prominently on your GitHub profile page at `https://github.com/<your-username>`.
+
 ## Local Development
 
 ### Running Project
