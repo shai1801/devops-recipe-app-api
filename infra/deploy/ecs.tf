@@ -213,7 +213,7 @@ resource "aws_security_group" "ecs_services" {
 }
 
 resource "aws_ecs_service" "api" {
-  name                   = "${local.prefix}-api-service"
+  name                   = "${local.prefix}-api"
   cluster                = aws_ecs_cluster.main.name
   task_definition        = aws_ecs_task_definition.api.family
   desired_count          = 1
@@ -224,7 +224,7 @@ resource "aws_ecs_service" "api" {
   depends_on = [aws_iam_service_linked_role.ecs]
 
   network_configuration {
-    subnets          = [aws_subnet.private_a.id, aws_subnet.private_b.id]
+    subnets          = [aws_subnet.public_a.id, aws_subnet.public_b.id]
     security_groups  = [aws_security_group.ecs_services.id]
     assign_public_ip = true #This is temporary till ALB is implemented.
   }
