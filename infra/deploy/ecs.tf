@@ -46,10 +46,6 @@ resource "aws_ecs_cluster" "main" {
   name = "${local.prefix}-cluster"
 }
 
-resource "aws_iam_service_linked_role" "ecs" {
-  aws_service_name = "ecs.amazonaws.com"
-}
-
 resource "aws_ecs_task_definition" "api" {
   family                   = "${local.prefix}-api"
   network_mode             = "awsvpc"
@@ -158,7 +154,7 @@ resource "aws_ecs_task_definition" "api" {
   ])
 
   volume {
-    name = "static"
+    name = "status"
   }
 
   runtime_platform {
@@ -220,8 +216,6 @@ resource "aws_ecs_service" "api" {
   launch_type            = "FARGATE"
   platform_version       = "1.4.0"
   enable_execute_command = true
-
-  depends_on = [aws_iam_service_linked_role.ecs]
 
   network_configuration {
     subnets          = [aws_subnet.private_a.id, aws_subnet.private_b.id]
