@@ -229,3 +229,4 @@ resource "aws_ecs_service" "api" {
     assign_public_ip = true #This is temporary till ALB is implemented.
   }
 }
+### dummy
