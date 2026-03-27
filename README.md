@@ -1,3 +1,6 @@
+# DevOps Recipe App API
+
+A Django REST API for managing recipes with user authentication, deployable to AWS via Docker and Terraform.
 
 ## Local Development
 
